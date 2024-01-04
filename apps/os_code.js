@@ -75,6 +75,8 @@ export async function OSCode(e) {
     } else {
         let cn_exchange = await import(`file://${_path}/plugins/genshin/apps/exchange.js`);
         let cn_code = new cn_exchange.exchange()
+	// 处理发送的消息以匹配新版云崽
+	e.msg = "#原神兑换码"
         cn_code.e = e
         return cn_code.getCode()
     }
