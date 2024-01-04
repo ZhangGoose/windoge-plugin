@@ -24,7 +24,18 @@ async function getProxy () {
     if (!proxyAddress) return null
     if (proxyAddress === 'http://0.0.0.0:0') return null
 
-    return new HttpsProxyAgent(proxyAddress)
+    if (HttpsProxyAgent === '') {
+        HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
+            logger.error(err)
+        })
+
+        HttpsProxyAgent = HttpsProxyAgent ? HttpsProxyAgent.HttpsProxyAgent : undefined
+    }
+
+    if (HttpsProxyAgent) {
+        return new HttpsProxyAgent(proxyAddress)
+    }
+    return null
 }
 
 async function getEvent(moreEvent=false) {
